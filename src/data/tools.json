@@ -1,0 +1,134 @@
+[
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "logo": "https://logo.clearbit.com/cursor.sh",
+    "website": "https://cursor.sh",
+    "category": "code-gen",
+    "tagline": "The AI-first code editor",
+    "description": "Cursor is a code editor built on VS Code with deep AI integration. Designers who code use it to build and iterate on UI fast — just describe what you want and it writes the code. Known for its tab autocomplete and multi-file AI edits.",
+    "knownFor": ["AI code generation", "VS Code compatible", "Chat with your codebase"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "logo": "https://logo.clearbit.com/anthropic.com",
+    "website": "https://claude.ai",
+    "category": "ai-assistant",
+    "tagline": "AI assistant by Anthropic",
+    "description": "Claude is Anthropic's AI assistant used by designers for writing UX copy, generating design briefs, structuring research, and thinking through product decisions. Known for nuanced, thoughtful responses and handling long documents.",
+    "knownFor": ["UX writing", "Research synthesis", "Long context window"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "framer",
+    "name": "Framer",
+    "logo": "https://logo.clearbit.com/framer.com",
+    "website": "https://framer.com",
+    "category": "prototyping",
+    "tagline": "Design and ship your site",
+    "description": "Framer is a design tool that lets you build fully interactive, production-ready websites without writing code. AI features help generate layouts and copy on the fly. The go-to for designers who want to ship without a developer.",
+    "knownFor": ["No-code websites", "Advanced interactions", "AI layout generation"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "lovable",
+    "name": "Lovable",
+    "logo": "https://logo.clearbit.com/lovable.dev",
+    "website": "https://lovable.dev",
+    "category": "code-gen",
+    "tagline": "Build software with AI",
+    "description": "Lovable lets you build full-stack web apps by describing what you want in plain English. Popular with product designers who want to go from idea to working prototype without touching code. Pairs well with Figma designs.",
+    "knownFor": ["Full-stack app generation", "Natural language input", "Rapid prototyping"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "jitter",
+    "name": "Jitter",
+    "logo": "https://logo.clearbit.com/jitter.video",
+    "website": "https://jitter.video",
+    "category": "motion",
+    "tagline": "Fast motion design for teams",
+    "description": "Jitter is a motion design tool built for UI teams. Create smooth UI animations, loading states, and micro-interactions without After Effects. AI helps generate animation presets. Perfect for designers who want to add life to their product.",
+    "knownFor": ["UI animations", "Team collaboration", "Figma import"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "figma",
+    "name": "Figma",
+    "logo": "https://logo.clearbit.com/figma.com",
+    "website": "https://figma.com",
+    "category": "design",
+    "tagline": "The collaborative design tool",
+    "description": "Figma is the industry-standard UI design tool. Its AI features now include auto-layout suggestions, design linting, and the ability to generate UI from text prompts. The hub of nearly every design workflow.",
+    "knownFor": ["UI/UX design", "Prototyping", "Team collaboration"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "midjourney",
+    "name": "Midjourney",
+    "logo": "https://logo.clearbit.com/midjourney.com",
+    "website": "https://midjourney.com",
+    "category": "image-gen",
+    "tagline": "AI image generation",
+    "description": "Midjourney generates high-quality images from text prompts. Designers use it for moodboards, concept exploration, marketing visuals, and hero imagery. Known for its aesthetic quality and style consistency.",
+    "knownFor": ["Moodboarding", "Concept art", "Marketing visuals"],
+    "pricing": "Paid"
+  },
+  {
+    "id": "v0",
+    "name": "v0 by Vercel",
+    "logo": "https://logo.clearbit.com/vercel.com",
+    "website": "https://v0.dev",
+    "category": "code-gen",
+    "tagline": "Generate UI with AI",
+    "description": "v0 is Vercel's AI tool for generating React/Tailwind UI components from text descriptions or screenshots. Designers use it to quickly scaffold UI they can hand off or continue building. Outputs clean, copy-pasteable code.",
+    "knownFor": ["React component generation", "Tailwind output", "Screenshot to code"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "runway",
+    "name": "Runway",
+    "logo": "https://logo.clearbit.com/runwayml.com",
+    "website": "https://runwayml.com",
+    "category": "motion",
+    "tagline": "AI creative tools for video",
+    "description": "Runway is an AI-powered video creation and editing platform. UX designers and brand teams use it to generate product videos, animate still images, and create motion assets without a video team.",
+    "knownFor": ["Video generation", "Image animation", "AI video editing"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "logo": "https://logo.clearbit.com/perplexity.ai",
+    "website": "https://perplexity.ai",
+    "category": "ai-assistant",
+    "tagline": "AI-powered search engine",
+    "description": "Perplexity is an AI search engine that gives cited, up-to-date answers. Designers use it for quick research, competitive analysis, trend discovery, and understanding unfamiliar topics — without sifting through search results.",
+    "knownFor": ["Cited answers", "Research", "Real-time web access"],
+    "pricing": "Freemium"
+  },
+  {
+    "id": "galileo",
+    "name": "Galileo AI",
+    "logo": "https://logo.clearbit.com/usegalileo.ai",
+    "website": "https://usegalileo.ai",
+    "category": "design",
+    "tagline": "Generate UI designs from text",
+    "description": "Galileo AI generates polished UI designs directly from text descriptions. It outputs editable Figma-compatible designs. Useful for quickly exploring design directions before committing to detailed work.",
+    "knownFor": ["Text to UI", "Figma export", "Design exploration"],
+    "pricing": "Waitlist"
+  },
+  {
+    "id": "claude-code",
+    "name": "Claude Code",
+    "logo": "https://logo.clearbit.com/anthropic.com",
+    "website": "https://claude.ai/code",
+    "category": "code-gen",
+    "tagline": "Agentic coding in your terminal",
+    "description": "Claude Code is Anthropic's CLI coding agent that works directly in your terminal or editor. It reads your codebase, plans changes, and executes them. Designers who code use it to build features and fix bugs through conversation.",
+    "knownFor": ["Agentic coding", "Full codebase context", "CLI + editor integration"],
+    "pricing": "Paid"
+  }
+]
