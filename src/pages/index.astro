@@ -14,6 +14,12 @@ const categories = [
 ---
 
 <Layout>
+  <!-- Vector Field Canvas -->
+  <canvas id="vf-canvas" class="fixed inset-0 w-screen h-screen pointer-events-none" style="z-index: 0;"></canvas>
+
+  <!-- Page content (sits above canvas) -->
+  <div class="relative" style="z-index: 1;">
+
   <!-- Hero -->
   <header class="relative overflow-hidden px-6 pt-24 pb-16 text-center">
     <div class="absolute inset-0 bg-gradient-to-b from-zinc-800/40 via-transparent to-transparent pointer-events-none"></div>
@@ -29,8 +35,11 @@ const categories = [
     </div>
   </header>
 
+  <!-- Sentinel for sticky detection -->
+  <div id="filter-sentinel"></div>
+
   <!-- Filters -->
-  <div class="sticky top-0 z-10 bg-[rgba(10,10,10,0.52)] backdrop-blur-md border-b border-white/5 px-6 py-4">
+  <div id="filter-bar-wrap" class="sticky top-0 z-10 bg-[rgba(10,10,10,0)] px-6 py-4 border-b border-transparent transition-colors duration-300">
     <div id="filter-bar" class="flex gap-2 flex-wrap justify-center max-w-4xl mx-auto opacity-0">
       {categories.map((cat) => (
         <button
@@ -49,7 +58,7 @@ const categories = [
     <div id="tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {tools.map((tool) => (
         <article
-          class="tool-card group relative flex flex-col bg-zinc-900/60 border border-white/8 rounded-2xl p-5 cursor-default overflow-hidden opacity-0"
+          class="tool-card group relative flex flex-col bg-zinc-900/50 backdrop-blur-md border border-white/8 rounded-2xl p-5 cursor-default overflow-hidden opacity-0"
           data-category={tool.category}
         >
           <!-- subtle glow on hover -->
@@ -113,7 +122,154 @@ const categories = [
   <footer class="text-center py-10 text-zinc-600 text-sm border-t border-white/5">
     Built for designers, by a designer · Updated regularly
   </footer>
+
+  </div><!-- end content wrapper -->
 </Layout>
+
+<!-- Vector Field Control Panel -->
+<!-- Vector field configurator — hidden but preserved. Remove `display:none` to re-enable -->
+<div id="vf-panel" class="fixed bottom-6 right-6 w-64 select-none" style="z-index: 50; display: none;">
+  <div class="bg-zinc-900/95 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden">
+
+    <!-- Header toggle -->
+    <button id="vf-toggle" class="w-full flex items-center justify-between px-4 py-3 border-b border-white/8 hover:bg-white/5 transition-colors cursor-pointer">
+      <span class="text-sm font-medium text-white">Vector Field</span>
+      <svg id="vf-chevron" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-zinc-400 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+
+    <!-- Controls -->
+    <div id="vf-body" class="px-4 py-4 space-y-4 text-xs text-zinc-400 max-h-[72vh] overflow-y-auto">
+
+      <!-- Density -->
+      <div>
+        <div class="flex justify-between mb-1.5"><span>Density</span><span id="val-spacing" class="text-zinc-200">22</span></div>
+        <input type="range" id="sl-spacing" min="15" max="80" step="1" value="22" class="w-full accent-zinc-400">
+      </div>
+
+      <!-- Length -->
+      <div>
+        <div class="flex justify-between mb-1.5"><span>Length</span><span id="val-length" class="text-zinc-200">4</span></div>
+        <input type="range" id="sl-length" min="4" max="50" step="1" value="4" class="w-full accent-zinc-400">
+      </div>
+
+      <!-- Thickness -->
+      <div>
+        <div class="flex justify-between mb-1.5"><span>Thickness</span><span id="val-thickness" class="text-zinc-200">1.2</span></div>
+        <input type="range" id="sl-thickness" min="0.5" max="5" step="0.1" value="1.2" class="w-full accent-zinc-400">
+      </div>
+
+      <!-- Opacity -->
+      <div>
+        <div class="flex justify-between mb-1.5"><span>Opacity</span><span id="val-opacity" class="text-zinc-200">0.35</span></div>
+        <input type="range" id="sl-opacity" min="0.02" max="1" step="0.01" value="0.35" class="w-full accent-zinc-400">
+      </div>
+
+      <!-- Color + Rounded -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span>Color</span>
+          <input type="color" id="sl-color" value="#383B3E" class="h-6 w-10 rounded cursor-pointer border-0 p-0 bg-transparent">
+        </div>
+        <div class="flex items-center gap-2 ml-auto">
+          <span>Rounded</span>
+          <div id="vf-rounded-toggle" class="w-8 h-4 rounded-full cursor-pointer relative transition-colors duration-200" style="background:#52525b;">
+            <div id="vf-rounded-knob" class="absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform duration-200" style="left:2px; transform:translateX(16px);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-white/8 pt-4 space-y-4">
+
+        <!-- Cursor Mode -->
+        <div>
+          <div class="mb-1.5">Cursor mode</div>
+          <div class="flex gap-1">
+            <button class="vf-mode flex-1 py-1 rounded-lg border text-[10px] font-medium transition-colors border-zinc-500 text-white bg-white/10" data-mode="flow">Flow</button>
+            <button class="vf-mode flex-1 py-1 rounded-lg border text-[10px] font-medium transition-colors border-white/10 text-zinc-500" data-mode="attract">Attract</button>
+            <button class="vf-mode flex-1 py-1 rounded-lg border text-[10px] font-medium transition-colors border-white/10 text-zinc-500" data-mode="repel">Repel</button>
+          </div>
+        </div>
+
+        <!-- Influence Radius -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Influence radius</span><span id="val-radius" class="text-zinc-200">370</span></div>
+          <input type="range" id="sl-radius" min="30" max="500" step="5" value="370" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Influence Strength -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Influence strength</span><span id="val-strength" class="text-zinc-200">1.50</span></div>
+          <input type="range" id="sl-strength" min="0" max="3" step="0.05" value="1.5" class="w-full accent-zinc-400">
+        </div>
+
+      </div>
+
+      <div class="border-t border-white/8 pt-4 space-y-4">
+
+        <!-- Ambient Speed -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Ambient speed</span><span id="val-aspeed" class="text-zinc-200">1.75</span></div>
+          <input type="range" id="sl-aspeed" min="0" max="3" step="0.05" value="1.75" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Ambient Intensity -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Ambient intensity</span><span id="val-aintensity" class="text-zinc-200">1.55</span></div>
+          <input type="range" id="sl-aintensity" min="0" max="2" step="0.05" value="1.55" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Fade Start -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Fade start</span><span id="val-fade" class="text-zinc-200">55%</span></div>
+          <input type="range" id="sl-fade" min="10" max="100" step="1" value="55" class="w-full accent-zinc-400">
+        </div>
+
+      </div>
+
+      <div class="border-t border-white/8 pt-4 space-y-4">
+
+        <!-- Shimmer Amount -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Shimmer amount</span><span id="val-shimmer-amt" class="text-zinc-200">0.76</span></div>
+          <input type="range" id="sl-shimmer-amt" min="0" max="1" step="0.01" value="0.76" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Shimmer Speed -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Shimmer speed</span><span id="val-shimmer-spd" class="text-zinc-200">3.85</span></div>
+          <input type="range" id="sl-shimmer-spd" min="0" max="6" step="0.05" value="3.85" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Shimmer Shape -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Shimmer shape</span><span id="val-shimmer-shape" class="text-zinc-200">0.66</span></div>
+          <input type="range" id="sl-shimmer-shape" min="0" max="1" step="0.01" value="0.66" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Turbulence -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Turbulence</span><span id="val-turbulence" class="text-zinc-200">0.00</span></div>
+          <input type="range" id="sl-turbulence" min="0" max="1.5" step="0.01" value="0" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Size Variation -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Size variation</span><span id="val-size-var" class="text-zinc-200">0.21</span></div>
+          <input type="range" id="sl-size-var" min="0" max="1" step="0.01" value="0.21" class="w-full accent-zinc-400">
+        </div>
+
+        <!-- Size Speed -->
+        <div>
+          <div class="flex justify-between mb-1.5"><span>Size speed</span><span id="val-size-spd" class="text-zinc-200">0.50</span></div>
+          <input type="range" id="sl-size-spd" min="0" max="6" step="0.05" value="0.5" class="w-full accent-zinc-400">
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   import gsap from 'gsap';
@@ -122,7 +278,9 @@ const categories = [
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
   tl.to('#hero-eyebrow', { opacity: 1, y: 0, duration: 0.6, from: { y: 20 } })
-    .to('#hero-title',   { opacity: 1, y: 0, duration: 0.7, from: { y: 30 } }, '-=0.3')
+    .fromTo('#hero-title',
+      { opacity: 0, filter: 'blur(24px)' },
+      { opacity: 1, filter: 'blur(0px)', duration: 1.0, ease: 'power2.out' }, '-=0.3')
     .to('#hero-sub',     { opacity: 1, y: 0, duration: 0.6, from: { y: 20 } }, '-=0.4')
     .to('#hero-count',   { opacity: 1, duration: 0.4 }, '-=0.2')
     .to('#filter-bar',   { opacity: 1, y: 0, duration: 0.5, from: { y: 10 } }, '-=0.2')
@@ -144,6 +302,16 @@ const categories = [
     });
   });
 
+  // ── Sticky filter blur ───────────────────────────────────────────────────────
+  const filterBarWrap = document.getElementById('filter-bar-wrap')!;
+  const filterSentinel = document.getElementById('filter-sentinel')!;
+  new IntersectionObserver(([entry]) => {
+    const stuck = !entry.isIntersecting;
+    filterBarWrap.classList.toggle('backdrop-blur-md', stuck);
+    filterBarWrap.classList.toggle('border-transparent', !stuck);
+    filterBarWrap.classList.toggle('border-white/5', stuck);
+  }, { threshold: 0 }).observe(filterSentinel);
+
   // ── Filter logic ─────────────────────────────────────────────────────────────
   const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
   const cards      = document.querySelectorAll<HTMLElement>('.tool-card');
@@ -152,18 +320,18 @@ const categories = [
   function setActiveFilter(btn: HTMLButtonElement) {
     filterBtns.forEach((b) => {
       b.dataset.active = 'false';
-      b.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-white/10 text-zinc-400 hover:border-zinc-400/50 hover:text-white';
+      b.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-white/10 text-zinc-400 hover:border-zinc-400/50 hover:text-white bg-zinc-900/60 backdrop-blur-sm';
     });
     btn.dataset.active = 'true';
-    btn.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-zinc-400 text-white bg-white/10';
+    btn.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-zinc-400 text-white bg-zinc-800/80 backdrop-blur-sm';
   }
 
   // Apply initial active style on load
   filterBtns.forEach((btn) => {
     if (btn.dataset.active === 'true') {
-      btn.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-zinc-400 text-white bg-white/10';
+      btn.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-zinc-400 text-white bg-zinc-800/80 backdrop-blur-sm';
     } else {
-      btn.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-white/10 text-zinc-400 hover:border-zinc-400/50 hover:text-white';
+      btn.className = 'filter-btn px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 cursor-pointer border-white/10 text-zinc-400 hover:border-zinc-400/50 hover:text-white bg-zinc-900/60 backdrop-blur-sm';
     }
   });
 
@@ -205,8 +373,8 @@ const categories = [
         // Animate height and fade-in simultaneously
         gsap.to(grid, {
           minHeight: newHeight,
-          duration: 0.4,
-          ease: 'power2.inOut',
+          duration: 0.5,
+          ease: 'power3.inOut',
           onComplete: () => { grid.style.minHeight = ''; },
         });
 
@@ -233,6 +401,202 @@ const categories = [
       }
 
       emptyState.classList.toggle('hidden', visible.length > 0);
+    });
+  });
+</script>
+
+<script>
+  // ── Vector Field ─────────────────────────────────────────────────────────────
+  const vfCanvas = document.getElementById('vf-canvas') as HTMLCanvasElement;
+  const vfCtx = vfCanvas.getContext('2d')!;
+
+  const cfg = {
+    spacing:           22,
+    length:            4,
+    thickness:         1.2,
+    opacity:           0.35,
+    color:             '#383B3E',
+    rounded:           true,
+    influenceRadius:   370,
+    influenceStrength: 1.5,
+    mode:              'flow' as 'flow' | 'attract' | 'repel',
+    ambientSpeed:      1.75,
+    ambientIntensity:  1.55,
+    fadeStart:         0.55,
+    shimmerAmount:     0.76,
+    shimmerSpeed:      3.85,
+    shimmerShape:      0.66,
+    turbulence:        0.0,
+    sizeVariation:     0.21,
+    sizeSpeed:         0.5,
+  };
+
+  let mouse = { x: -9999, y: -9999 };
+  let vfTime = 0;
+  let vfScrollY = 0;
+  window.addEventListener('scroll', () => { vfScrollY = window.scrollY; }, { passive: true });
+
+  function vfResize() {
+    vfCanvas.width  = window.innerWidth;
+    vfCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', vfResize);
+  vfResize();
+
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  function vfDraw() {
+    vfCtx.clearRect(0, 0, vfCanvas.width, vfCanvas.height);
+
+    // Parallax: field moves at 35% of scroll speed, so draw extra rows to fill gaps
+    const parallaxOffset = vfScrollY * 0.35;
+    const extraRows = Math.ceil(parallaxOffset / cfg.spacing) + 2;
+
+    const cols = Math.ceil(vfCanvas.width  / cfg.spacing) + 1;
+    const rows = Math.ceil(vfCanvas.height / cfg.spacing) + 1 + extraRows;
+
+    vfCtx.lineCap   = cfg.rounded ? 'round' : 'butt';
+    vfCtx.lineWidth = cfg.thickness;
+    vfCtx.strokeStyle = cfg.color;
+
+    vfCtx.save();
+    vfCtx.translate(0, -parallaxOffset % (cfg.spacing * (extraRows || 1)));
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const vx = col * cfg.spacing;
+        const vy = row * cfg.spacing;
+
+        // Vertical fade
+        const t  = vy / vfCanvas.height;
+        const fs = cfg.fadeStart;
+        const fade  = t < fs ? 1 : Math.max(0, 1 - (t - fs) / Math.max(0.01, 1 - fs));
+        const alpha = cfg.opacity * fade;
+        if (alpha < 0.005) continue;
+
+        // Ambient base angle
+        let angle = Math.sin(vx * 0.008 + vfTime) *
+                    Math.cos(vy * 0.008 + vfTime * 0.7) *
+                    Math.PI * cfg.ambientIntensity;
+
+        // Turbulence — secondary wave layer for organic feel
+        angle += Math.sin(vx * 0.022 + vy * 0.016 + vfTime * 1.3) *
+                 Math.cos(vx * 0.014 - vy * 0.019 + vfTime * 0.9) *
+                 Math.PI * cfg.turbulence;
+
+        // Cursor influence
+        const dx   = mouse.x - vx;
+        const dy   = mouse.y - vy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < cfg.influenceRadius && dist > 0) {
+          const falloff     = Math.pow(1 - dist / cfg.influenceRadius, 2);
+          const cursorAngle = Math.atan2(dy, dx);
+          const target      = cfg.mode === 'attract' ? cursorAngle
+                            : cfg.mode === 'repel'   ? cursorAngle + Math.PI
+                            :                          cursorAngle + Math.PI / 2;
+          let da = target - angle;
+          da = ((da + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+          angle += da * falloff * cfg.influenceStrength;
+        }
+
+        // Size variation — length breathes per line
+        const sizeWave = Math.sin(vx * 0.03 + vy * 0.02 + vfTime * cfg.sizeSpeed) * 0.5 + 0.5;
+        const dynLength = cfg.length * (1 - cfg.sizeVariation + sizeWave * cfg.sizeVariation);
+
+        // Shimmer — per-line opacity pulse (blend diagonal ↔ blobby via shimmerShape)
+        const shimmerLinear = Math.sin(vx * 0.05 + vy * 0.04 + vfTime * cfg.shimmerSpeed);
+        const shimmerBlobby = Math.sin(vx * 0.04 + vfTime * cfg.shimmerSpeed * 0.7) *
+                              Math.cos(vy * 0.04 - vfTime * cfg.shimmerSpeed * 0.9);
+        const shimmerRaw = shimmerLinear * (1 - cfg.shimmerShape) + shimmerBlobby * cfg.shimmerShape;
+        const shimmer = shimmerRaw * 0.5 + 0.5;
+        const shimmerAlpha = alpha * (1 - cfg.shimmerAmount + shimmer * cfg.shimmerAmount);
+
+        const hl = dynLength / 2;
+        const cx = Math.cos(angle);
+        const cy = Math.sin(angle);
+
+        vfCtx.globalAlpha = shimmerAlpha;
+        vfCtx.beginPath();
+        vfCtx.moveTo(vx - cx * hl, vy - cy * hl);
+        vfCtx.lineTo(vx + cx * hl, vy + cy * hl);
+        vfCtx.stroke();
+      }
+    }
+
+    vfCtx.restore();
+    vfCtx.globalAlpha = 1;
+    vfTime += 0.005 * cfg.ambientSpeed;
+    requestAnimationFrame(vfDraw);
+  }
+
+  vfDraw();
+
+  // ── Panel wiring ─────────────────────────────────────────────────────────────
+  const vfBody    = document.getElementById('vf-body')!;
+  const vfChevron = document.getElementById('vf-chevron')!;
+  document.getElementById('vf-toggle')!.addEventListener('click', () => {
+    const open = !vfBody.classList.contains('hidden');
+    vfBody.classList.toggle('hidden', open);
+    vfChevron.style.transform = open ? 'rotate(-90deg)' : '';
+  });
+
+  function wire(sliderId: string, key: keyof typeof cfg, valId: string, fmt?: (n: number) => string) {
+    const sl  = document.getElementById(sliderId)  as HTMLInputElement;
+    const val = document.getElementById(valId)!;
+    sl.addEventListener('input', () => {
+      const n = parseFloat(sl.value);
+      (cfg as Record<string, unknown>)[key] = n;
+      val.textContent = fmt ? fmt(n) : (sl.step === '1' ? String(n) : n.toFixed(2));
+    });
+  }
+
+  wire('sl-spacing',    'spacing',           'val-spacing');
+  wire('sl-length',     'length',            'val-length');
+  wire('sl-thickness',  'thickness',         'val-thickness');
+  wire('sl-opacity',    'opacity',           'val-opacity');
+  wire('sl-radius',     'influenceRadius',   'val-radius');
+  wire('sl-strength',   'influenceStrength', 'val-strength');
+  wire('sl-aspeed',       'ambientSpeed',      'val-aspeed');
+  wire('sl-aintensity',   'ambientIntensity',  'val-aintensity');
+  wire('sl-shimmer-amt',  'shimmerAmount',     'val-shimmer-amt');
+  wire('sl-shimmer-spd',   'shimmerSpeed',      'val-shimmer-spd');
+  wire('sl-shimmer-shape', 'shimmerShape',      'val-shimmer-shape');
+  wire('sl-turbulence',   'turbulence',        'val-turbulence');
+  wire('sl-size-var',     'sizeVariation',     'val-size-var');
+  wire('sl-size-spd',     'sizeSpeed',         'val-size-spd');
+
+  // Fade slider (integer % → 0-1 fraction)
+  const slFade  = document.getElementById('sl-fade')  as HTMLInputElement;
+  const valFade = document.getElementById('val-fade')!;
+  slFade.addEventListener('input', () => {
+    cfg.fadeStart = parseInt(slFade.value) / 100;
+    valFade.textContent = slFade.value + '%';
+  });
+
+  // Color
+  (document.getElementById('sl-color') as HTMLInputElement)
+    .addEventListener('input', (e) => { cfg.color = (e.target as HTMLInputElement).value; });
+
+  // Rounded toggle
+  const roundedToggle = document.getElementById('vf-rounded-toggle')!;
+  const roundedKnob   = document.getElementById('vf-rounded-knob')!;
+  roundedToggle.addEventListener('click', () => {
+    cfg.rounded = !cfg.rounded;
+    roundedToggle.style.background   = cfg.rounded ? '#52525b' : '#3f3f46';
+    roundedKnob.style.transform      = cfg.rounded ? 'translateX(16px)' : 'translateX(0)';
+  });
+
+  // Mode buttons
+  document.querySelectorAll<HTMLButtonElement>('.vf-mode').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      cfg.mode = btn.dataset.mode as typeof cfg.mode;
+      document.querySelectorAll<HTMLButtonElement>('.vf-mode').forEach((b) => {
+        const active = b.dataset.mode === cfg.mode;
+        b.className = `vf-mode flex-1 py-1 rounded-lg border text-[10px] font-medium transition-colors ${
+          active ? 'border-zinc-500 text-white bg-white/10' : 'border-white/10 text-zinc-500'
+        }`;
+      });
     });
   });
 </script>
