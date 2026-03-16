@@ -726,7 +726,7 @@ const categories = [
       <div class="grid grid-cols-[1fr_1px_1fr] gap-x-6 items-start">
         <!-- Tool A header -->
         <div class="flex items-center gap-2.5 mb-5 min-w-0">
-          <div class="w-9 h-9 rounded-xl bg-zinc-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0" style="background:${toolA.iconBg ?? 'rgb(39,39,42)'}">
             <img src="${getFaviconUrl(toolA.website)}" style="${iconStyle(toolA)}" />
           </div>
           <span class="font-semibold text-white text-sm hidden sm:block truncate">${toolA.name}</span>
@@ -735,7 +735,7 @@ const categories = [
         <div class="bg-white/8 self-stretch mt-0"></div>
         <!-- Tool B header -->
         <div class="flex items-center gap-2.5 mb-5 min-w-0">
-          <div class="w-9 h-9 rounded-xl bg-zinc-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+          <div class="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0" style="background:${toolB.iconBg ?? 'rgb(39,39,42)'}">
             <img src="${getFaviconUrl(toolB.website)}" style="${iconStyle(toolB)}" />
           </div>
           <span class="font-semibold text-zinc-300 text-sm hidden sm:block truncate">${toolB.name}</span>
