@@ -58,19 +58,29 @@ const categories = [
     <div id="tools-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
       {tools.map((tool) => (
         <article
-          class="tool-card group relative flex flex-col bg-zinc-900/50 backdrop-blur-md border border-white/8 rounded-2xl p-5 cursor-default overflow-hidden opacity-0"
-          data-category={tool.category}
+          class="tool-card group relative flex flex-col bg-zinc-900/50 backdrop-blur-md border border-white/8 rounded-2xl p-5 cursor-default overflow-hidden opacity-0 transition-colors duration-300 select-none"
+          data-category={Array.isArray(tool.category) ? tool.category.join(' ') : tool.category}
+          data-id={tool.id}
+          data-name={tool.name}
         >
           <!-- subtle glow on hover -->
           <div class="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-white/5 pointer-events-none"></div>
 
+          <!-- Compare select button -->
+          <button
+            class="compare-btn absolute top-3 right-3 w-6 h-6 rounded-full border border-white/25 overflow-hidden flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity duration-200 z-10"
+            aria-label="Select for comparison"
+          >
+            <span class="select-dot w-6 h-6 rounded-full flex-shrink-0" style="background: #ffffff; transform: scale(0); transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);"></span>
+          </button>
+
           <!-- Header -->
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-zinc-800 flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0" style={`background-color: ${tool.iconBg ?? '#27272a'}`}>
               <img
                 src={`https://www.google.com/s2/favicons?domain=${new URL(tool.website).hostname}&sz=64`}
                 alt={tool.name + ' logo'}
-                class="w-full h-full object-cover"
+                class={tool.iconPadding ? "object-contain p-1.5" : "w-full h-full object-cover"}
                 onerror="this.style.display='none'"
               />
             </div>
@@ -124,6 +134,98 @@ const categories = [
   </footer>
 
   </div><!-- end content wrapper -->
+
+  <!-- Compare Footer -->
+  <div id="compare-footer" class="fixed bottom-0 left-0 right-0 z-40 translate-y-full transition-transform duration-400 ease-out" style="transition-timing-function: cubic-bezier(0.16,1,0.3,1);">
+    <div class="mx-auto max-w-lg mb-6 px-4">
+      <div class="bg-zinc-900/95 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-4 flex items-center gap-4 shadow-2xl">
+        <!-- Slot A -->
+        <div id="slot-a" class="flex items-center gap-2 flex-1 min-w-0">
+          <div class="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden" id="slot-a-icon">
+            <span class="text-zinc-600 text-xs">?</span>
+          </div>
+          <span id="slot-a-name" class="text-sm text-zinc-400 truncate">Pick a tool</span>
+        </div>
+        <!-- VS divider -->
+        <span class="text-zinc-600 text-xs font-bold flex-shrink-0">VS</span>
+        <!-- Slot B -->
+        <div id="slot-b" class="flex items-center gap-2 flex-1 min-w-0">
+          <div class="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0 overflow-hidden" id="slot-b-icon">
+            <span class="text-zinc-600 text-xs">?</span>
+          </div>
+          <span id="slot-b-name" class="text-sm text-zinc-400 truncate">Pick a tool</span>
+        </div>
+        <!-- Compare button -->
+        <button
+          id="compare-btn"
+          disabled
+          class="flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity duration-200"
+        >Compare</button>
+        <!-- Close -->
+        <button id="compare-footer-close" class="flex-shrink-0 text-zinc-600 hover:text-zinc-300 transition-colors">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compare Modal -->
+  <div id="compare-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="modal-backdrop"></div>
+    <div class="relative bg-zinc-900 border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+
+      <!-- Close button -->
+      <button id="modal-close" class="absolute top-4 right-4 z-10 text-zinc-500 hover:text-zinc-200 transition-colors">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Modal body -->
+      <div class="p-6 space-y-8">
+
+        <!-- Verdict + summary -->
+        <div class="text-center pt-2">
+          <span id="modal-verdict" class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold border"></span>
+          <p id="modal-summary" class="text-zinc-400 text-sm mt-3 leading-relaxed max-w-md mx-auto"></p>
+        </div>
+
+        <!-- Stats with tool headers -->
+        <div id="modal-stats"></div>
+
+        <!-- When to use -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-3" id="when-use-a-title"></h3>
+            <ul class="space-y-2" id="modal-when-a"></ul>
+          </div>
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-3" id="when-use-b-title"></h3>
+            <ul class="space-y-2" id="modal-when-b"></ul>
+          </div>
+        </div>
+
+        <!-- Overlap -->
+        <div class="bg-white/4 rounded-2xl p-4 border border-white/8">
+          <h3 class="text-xs font-semibold uppercase tracking-widest text-zinc-500 mb-2">Overlap</h3>
+          <p id="modal-overlap" class="text-zinc-300 text-sm leading-relaxed"></p>
+        </div>
+
+        <!-- Connection callout -->
+        <div id="modal-connection-wrap" class="hidden flex items-start gap-3 bg-blue-500/8 border border-blue-500/20 rounded-2xl p-4">
+          <span class="text-blue-400 text-base mt-0.5">⚡</span>
+          <div>
+            <h3 class="text-xs font-semibold uppercase tracking-widest text-blue-400 mb-1.5">Direct Integration</h3>
+            <p id="modal-connection" class="text-zinc-300 text-sm leading-relaxed"></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </Layout>
 
 <!-- Vector Field Control Panel -->
@@ -274,6 +376,10 @@ const categories = [
 <script>
   import gsap from 'gsap';
 
+  // Always start at top on load/refresh
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
   // ── Entrance animations ─────────────────────────────────────────────────────
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -346,7 +452,7 @@ const categories = [
       const hidden:  HTMLElement[] = [];
 
       cards.forEach((card) => {
-        if (cat === 'all' || card.dataset.category === cat) {
+        if (cat === 'all' || card.dataset.category?.split(' ').includes(cat)) {
           visible.push(card);
         } else {
           hidden.push(card);
@@ -403,6 +509,289 @@ const categories = [
       emptyState.classList.toggle('hidden', visible.length > 0);
     });
   });
+</script>
+
+<script>
+  // ── Compare feature ────────────────────────────────────────────────────────
+  import comparisonsData from '../data/comparisons.json';
+  import toolsData from '../data/tools.json';
+
+  const comparisons: Array<{
+    tools: string[];
+    verdict: string;
+    summary: string;
+    whenUseA: string[];
+    whenUseB: string[];
+    overlap: string;
+  }> = comparisonsData as any;
+
+  const tools: Array<{
+    id: string;
+    name: string;
+    website: string;
+    iconBg?: string;
+    iconPadding?: boolean;
+    metrics?: { userFriendliness: number; technicalDemand: number; aiIntegration: number };
+  }> = toolsData as any;
+
+  // State
+  let selected: string[] = []; // up to 2 tool ids
+
+  // Elements
+  const footer        = document.getElementById('compare-footer')!;
+  const slotAName     = document.getElementById('slot-a-name')!;
+  const slotBName     = document.getElementById('slot-b-name')!;
+  const slotAIcon     = document.getElementById('slot-a-icon')!;
+  const slotBIcon     = document.getElementById('slot-b-icon')!;
+  const compareBtn    = document.getElementById('compare-btn') as HTMLButtonElement;
+  const footerClose   = document.getElementById('compare-footer-close')!;
+  const modal         = document.getElementById('compare-modal')!;
+  const modalClose    = document.getElementById('modal-close')!;
+  const modalBackdrop = document.getElementById('modal-backdrop')!;
+
+  function getToolById(id: string) {
+    return tools.find(t => t.id === id);
+  }
+
+  function getFaviconUrl(website: string) {
+    const hostname = new URL(website).hostname;
+    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+  }
+
+  function iconImgHTML(tool: typeof tools[0]) {
+    const padding = tool.iconPadding ? 'style="padding:3px;width:100%;height:100%;object-fit:contain;"' : 'style="width:100%;height:100%;object-fit:cover;"';
+    return `<img src="${getFaviconUrl(tool.website)}" alt="${tool.name}" ${padding} />`;
+  }
+
+  function updateFooter() {
+    const toolA = selected[0] ? getToolById(selected[0]) : null;
+    const toolB = selected[1] ? getToolById(selected[1]) : null;
+
+    // Slot A
+    slotAName.textContent = toolA ? toolA.name : 'Pick a tool';
+    slotAName.className = toolA ? 'text-sm text-white truncate' : 'text-sm text-zinc-500 truncate';
+    slotAIcon.innerHTML = toolA
+      ? `<img src="${getFaviconUrl(toolA.website)}" style="width:100%;height:100%;object-fit:${toolA.iconPadding ? 'contain;padding:2px' : 'cover'};" />`
+      : '<span class="text-zinc-600 text-xs">?</span>';
+
+    // Slot B
+    slotBName.textContent = toolB ? toolB.name : 'Pick a tool';
+    slotBName.className = toolB ? 'text-sm text-white truncate' : 'text-sm text-zinc-500 truncate';
+    slotBIcon.innerHTML = toolB
+      ? `<img src="${getFaviconUrl(toolB.website)}" style="width:100%;height:100%;object-fit:${toolB.iconPadding ? 'contain;padding:2px' : 'cover'};" />`
+      : '<span class="text-zinc-600 text-xs">?</span>';
+
+    // Compare button
+    compareBtn.disabled = selected.length < 2;
+
+    // Show/hide footer
+    if (selected.length > 0) {
+      footer.classList.remove('translate-y-full');
+    } else {
+      footer.classList.add('translate-y-full');
+    }
+  }
+
+  function updateCardVisuals() {
+    document.querySelectorAll<HTMLElement>('.tool-card').forEach(card => {
+      const id = card.dataset.id!;
+      const btn = card.querySelector<HTMLElement>('.compare-btn')!;
+      const dot = card.querySelector<HTMLElement>('.select-dot')!;
+      const isSelected = selected.includes(id);
+
+      if (isSelected) {
+        card.classList.add('ring-2', 'ring-white/40');
+        card.style.borderColor = 'transparent';
+        btn.classList.add('opacity-100', 'border-white');
+        btn.classList.remove('border-white/25');
+        dot.style.transform = 'scale(1)';
+      } else {
+        card.classList.remove('ring-2', 'ring-white/40');
+        card.style.borderColor = '';
+        btn.classList.remove('opacity-100', 'border-white');
+        btn.classList.add('border-white/25');
+        dot.style.transform = 'scale(0)';
+      }
+    });
+  }
+
+  function selectTool(id: string) {
+    if (selected.includes(id)) {
+      // Deselect
+      selected = selected.filter(s => s !== id);
+    } else {
+      if (selected.length >= 2) {
+        // Replace oldest (shift queue)
+        selected = [selected[1], id];
+      } else {
+        selected = [...selected, id];
+      }
+    }
+    updateCardVisuals();
+    updateFooter();
+  }
+
+  // Wire card clicks
+  document.querySelectorAll<HTMLElement>('.tool-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      selectTool(card.dataset.id!);
+    });
+  });
+
+  // Footer close — deselect all
+  footerClose.addEventListener('click', () => {
+    selected = [];
+    updateCardVisuals();
+    updateFooter();
+  });
+
+  // ── Modal ──────────────────────────────────────────────────────────────────
+  const METRIC_LABELS: Record<string, string> = {
+    userFriendliness: 'User Friendliness',
+    technicalDemand:  'Technical Demand',
+    aiIntegration:    'AI Integration',
+  };
+
+  const VERDICT_STYLES: Record<string, string> = {
+    complementary:  'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+    'pick-one':     'bg-amber-500/10 text-amber-400 border-amber-500/30',
+    'different-jobs': 'bg-zinc-500/10 text-zinc-400 border-zinc-500/30',
+  };
+
+  const VERDICT_LABELS: Record<string, string> = {
+    complementary:    'Complementary — use both',
+    'pick-one':       'Pick one — significant overlap',
+    'different-jobs': 'Different jobs — minimal overlap',
+  };
+
+  function openModal() {
+    const [idA, idB] = selected;
+    const toolA = getToolById(idA)!;
+    const toolB = getToolById(idB)!;
+
+    // Find comparison (order-agnostic)
+    const comp = comparisons.find(c =>
+      (c.tools[0] === idA && c.tools[1] === idB) ||
+      (c.tools[0] === idB && c.tools[1] === idA)
+    );
+    if (!comp) return;
+
+    // Determine if we need to flip whenUse
+    const flipped = comp.tools[0] === idB;
+    const whenA = flipped ? comp.whenUseB : comp.whenUseA;
+    const whenB = flipped ? comp.whenUseA : comp.whenUseB;
+
+    // Verdict
+    const verdictEl = document.getElementById('modal-verdict')!;
+    verdictEl.textContent = VERDICT_LABELS[comp.verdict] ?? comp.verdict;
+    verdictEl.className = `inline-block px-4 py-1.5 rounded-full text-xs font-semibold border ${VERDICT_STYLES[comp.verdict] ?? ''}`;
+
+    // Summary
+    document.getElementById('modal-summary')!.textContent = comp.summary;
+
+    // Stats — side-by-side character card style
+    const statsEl = document.getElementById('modal-stats')!;
+    const metrics = Object.keys(METRIC_LABELS);
+
+    const iconStyle = (tool: typeof tools[0]) =>
+      `width:100%;height:100%;object-fit:${tool.iconPadding ? 'contain;padding:3px' : 'cover'};`;
+
+    const barColor = (key: string, val: number): string => {
+      // Technical Demand is reversed: low = good (green), high = bad (red)
+      const score = key === 'technicalDemand' ? 11 - val : val;
+      if (score >= 8) return 'linear-gradient(90deg, #22c55e, #4ade80)';       // green
+      if (score >= 6) return 'linear-gradient(90deg, #84cc16, #a3e635)';       // lime
+      if (score >= 4) return 'linear-gradient(90deg, #eab308, #facc15)';       // amber
+      return 'linear-gradient(90deg, #ef4444, #f87171)';                        // red
+    };
+
+    const statRowsHTML = (barClass: string, tool: typeof tools[0]) =>
+      metrics.map(key => {
+        const val = tool.metrics?.[key as keyof typeof tool.metrics] ?? 0;
+        return `
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-xs text-zinc-500">${METRIC_LABELS[key]}</span>
+              <span class="text-xs text-zinc-400">${val}/10</span>
+            </div>
+            <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(39,39,42,1)">
+              <div class="${barClass} h-full rounded-full" style="width:0%;background:${barColor(key, val)}" data-val="${val}" data-key="${key}"></div>
+            </div>
+          </div>`;
+      }).join('');
+
+    statsEl.innerHTML = `
+      <div class="grid grid-cols-[1fr_1px_1fr] gap-x-6 items-start">
+        <!-- Tool A header -->
+        <div class="flex items-center gap-2.5 mb-5 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-zinc-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+            <img src="${getFaviconUrl(toolA.website)}" style="${iconStyle(toolA)}" />
+          </div>
+          <span class="font-semibold text-white text-sm hidden sm:block truncate">${toolA.name}</span>
+        </div>
+        <!-- VS -->
+        <div class="bg-white/8 self-stretch mt-0"></div>
+        <!-- Tool B header -->
+        <div class="flex items-center gap-2.5 mb-5 min-w-0">
+          <div class="w-9 h-9 rounded-xl bg-zinc-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+            <img src="${getFaviconUrl(toolB.website)}" style="${iconStyle(toolB)}" />
+          </div>
+          <span class="font-semibold text-zinc-300 text-sm hidden sm:block truncate">${toolB.name}</span>
+        </div>
+        <!-- Tool A stats -->
+        <div class="space-y-4">${statRowsHTML('stat-bar-a', toolA)}</div>
+        <!-- Divider -->
+        <div class="bg-white/8 self-stretch"></div>
+        <!-- Tool B stats -->
+        <div class="space-y-4">${statRowsHTML('stat-bar-b', toolB)}</div>
+      </div>`;
+
+    // When to use
+    document.getElementById('when-use-a-title')!.textContent = `Use ${toolA.name.split(' ')[0]} when`;
+    document.getElementById('when-use-b-title')!.textContent = `Use ${toolB.name.split(' ')[0]} when`;
+    document.getElementById('modal-when-a')!.innerHTML = whenA.map(w =>
+      `<li class="flex gap-2 text-sm text-zinc-300"><span class="text-zinc-600 mt-0.5">→</span>${w}</li>`
+    ).join('');
+    document.getElementById('modal-when-b')!.innerHTML = whenB.map(w =>
+      `<li class="flex gap-2 text-sm text-zinc-300"><span class="text-zinc-600 mt-0.5">→</span>${w}</li>`
+    ).join('');
+
+    // Overlap
+    document.getElementById('modal-overlap')!.textContent = comp.overlap;
+
+    // Connection callout (optional)
+    const connectionEl = document.getElementById('modal-connection')!;
+    const connectionWrap = document.getElementById('modal-connection-wrap')!;
+    if ((comp as any).connection) {
+      connectionEl.textContent = (comp as any).connection;
+      connectionWrap.classList.remove('hidden');
+    } else {
+      connectionWrap.classList.add('hidden');
+    }
+
+    // Show modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // Animate bars — defer until after modal is visible and painted
+    setTimeout(() => {
+      modal.querySelectorAll<HTMLElement>('.stat-bar-a, .stat-bar-b').forEach(bar => {
+        const val = parseInt(bar.dataset.val ?? '0');
+        bar.style.transition = 'width 0.6s cubic-bezier(0.16,1,0.3,1)';
+        bar.style.width = `${val * 10}%`;
+      });
+    }, 30);
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  compareBtn.addEventListener('click', openModal);
+  modalClose.addEventListener('click', closeModal);
+  modalBackdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 </script>
 
 <script>
