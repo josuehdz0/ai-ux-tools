@@ -1,0 +1,535 @@
+[
+  {
+    "tools": ["cursor", "claude"],
+    "verdict": "complementary",
+    "summary": "Plan with Claude, build with Cursor. Together they cover the full design-to-code loop.",
+    "whenUseA": ["You're writing or editing code files directly", "You need multi-file edits in one go", "You want AI to autocomplete as you type"],
+    "whenUseB": ["You need to think through a UX problem before coding", "You want to generate a full component from a description", "You're deploying or running terminal commands via Claude Code"],
+    "overlap": "Both can generate and edit code — Claude via conversation, Cursor inline in your editor.",
+    "connection": "Claude Code runs as a native extension inside Cursor. You get Claude's full agentic capabilities — reading files, making edits, running commands — without leaving your editor."
+  },
+  {
+    "tools": ["cursor", "framer"],
+    "verdict": "pick-one",
+    "summary": "Both help you build web UI, but Cursor requires coding knowledge while Framer keeps you in a visual canvas.",
+    "whenUseA": ["You're comfortable with React or HTML/CSS", "You need a custom codebase you fully own", "You're building a complex app, not just a site"],
+    "whenUseB": ["You want to design and publish visually without writing code", "You need a marketing or portfolio site fast", "You prefer drag-and-drop over a terminal"],
+    "overlap": "Both output live, interactive web experiences."
+  },
+  {
+    "tools": ["cursor", "lovable"],
+    "verdict": "pick-one",
+    "summary": "Both generate code from prompts, but Lovable is more beginner-friendly while Cursor rewards coding experience.",
+    "whenUseA": ["You want full control over the codebase", "You're iterating on an existing project", "You know how to review and debug AI-generated code"],
+    "whenUseB": ["You want to go from zero to working app without coding", "You need a full-stack prototype quickly", "You're not comfortable in a code editor"],
+    "overlap": "Both use AI to generate functional web apps from natural language."
+  },
+  {
+    "tools": ["cursor", "jitter"],
+    "verdict": "different-jobs",
+    "summary": "Cursor builds products, Jitter animates them. They serve completely different parts of the workflow.",
+    "whenUseA": ["You're building the actual UI and product logic", "You need to write or edit code", "You're shipping a web app or site"],
+    "whenUseB": ["You need animated UI components or micro-interactions", "You're creating motion assets for a product or marketing", "You want to export animations without touching code"],
+    "overlap": "Both are used by designers who are comfortable with technical tools."
+  },
+  {
+    "tools": ["cursor", "figma"],
+    "verdict": "complementary",
+    "summary": "Design the UI in Figma, then build it in Cursor. One of the most common designer-who-codes workflows.",
+    "whenUseA": ["You're ready to translate a design into real code", "You want AI to help implement the design", "You're building interactive logic and state"],
+    "whenUseB": ["You're still in the design and exploration phase", "You need to create design specs for a team", "You're prototyping before committing to code"],
+    "overlap": "Figma Make can generate code from designs, blurring the line between the two.",
+    "connection": "Figma Make (powered by Claude) can generate a code scaffold from your design, which you can then open in Cursor to continue building and refining."
+  },
+  {
+    "tools": ["cursor", "midjourney"],
+    "verdict": "different-jobs",
+    "summary": "Midjourney creates images, Cursor builds products. They live in completely different parts of the creative process.",
+    "whenUseA": ["You're writing code and building UI", "You need a functional, interactive output", "You're working in a codebase"],
+    "whenUseB": ["You need visual assets — moodboards, concepts, or hero imagery", "You're exploring an aesthetic direction", "You need images fast without a photographer or illustrator"],
+    "overlap": "Both are AI-powered tools that save time in the creative process."
+  },
+  {
+    "tools": ["cursor", "v0"],
+    "verdict": "pick-one",
+    "summary": "v0 is purpose-built for generating UI components fast. Cursor is better for ongoing development across a full codebase.",
+    "whenUseA": ["You're building or maintaining a full project", "You need AI to help with logic, not just UI", "You want inline edits as you work"],
+    "whenUseB": ["You need a clean React/Tailwind component quickly", "You want to copy-paste UI into an existing project", "You're scaffolding a new design system component"],
+    "overlap": "Both output React code. v0 is better for isolated components, Cursor for the full project."
+  },
+  {
+    "tools": ["cursor", "runway"],
+    "verdict": "different-jobs",
+    "summary": "Cursor writes code for interactive products. Runway generates video and motion content. Completely different outputs.",
+    "whenUseA": ["You're building a web app or UI", "You need a codebase and functional logic", "Your output is interactive"],
+    "whenUseB": ["You need video or animated visual content", "You're producing marketing or brand assets", "Your output is media, not an app"],
+    "overlap": "Both are AI-powered creative tools used by modern design teams."
+  },
+  {
+    "tools": ["cursor", "perplexity"],
+    "verdict": "complementary",
+    "summary": "Research in Perplexity, build in Cursor. Use Perplexity to understand what to build, then Cursor to build it.",
+    "whenUseA": ["You know what you're building and need to write code", "You're implementing a feature or fixing a bug", "You're working inside a codebase"],
+    "whenUseB": ["You need quick answers about a technology or library", "You're doing competitive research before designing", "You want cited sources for design decisions"],
+    "overlap": "Both save developers and designers time — one through information, the other through code."
+  },
+  {
+    "tools": ["cursor", "galileo"],
+    "verdict": "pick-one",
+    "summary": "Google Stitch generates UI visually from prompts. Cursor generates code. Choose based on how technical your output needs to be.",
+    "whenUseA": ["You need to build a working codebase, not just a visual", "You're comfortable reading and editing code", "You want full ownership of the output"],
+    "whenUseB": ["You need a UI design fast without touching code", "You want to export to Figma for further design work", "You're exploring layout options quickly"],
+    "overlap": "Both generate UI from text prompts — one as code, one as a visual design."
+  },
+  {
+    "tools": ["cursor", "base44"],
+    "verdict": "pick-one",
+    "summary": "Base44 is for non-coders who want a working app. Cursor is for those comfortable in code who want AI assistance.",
+    "whenUseA": ["You understand code and want fine-grained control", "You're working on an existing project with a codebase", "You need custom logic beyond what a no-code tool supports"],
+    "whenUseB": ["You want a full app with backend and hosting without coding", "You're validating an idea as fast as possible", "You don't want to manage a codebase"],
+    "overlap": "Both turn a description into a working web app using AI."
+  },
+  {
+    "tools": ["claude", "framer"],
+    "verdict": "complementary",
+    "summary": "Use Claude to write copy, plan structure, and think through UX. Use Framer to build and publish it visually.",
+    "whenUseA": ["You're writing landing page copy or UX text", "You need to think through information architecture", "You want help strategizing before you design"],
+    "whenUseB": ["You're ready to lay out and publish a website", "You want drag-and-drop design with live preview", "You need a site live without a developer"],
+    "overlap": "Framer has AI copy generation, and Claude can output HTML — but their sweet spots don't overlap much."
+  },
+  {
+    "tools": ["claude", "lovable"],
+    "verdict": "complementary",
+    "summary": "Claude helps you plan and spec what to build. Lovable takes that spec and builds the actual app.",
+    "whenUseA": ["You're defining requirements, user flows, or data models", "You want to think through edge cases before building", "You need help writing prompts to feed into Lovable"],
+    "whenUseB": ["You have a clear idea and want a working app now", "You need frontend and backend generated together", "You want to iterate visually without coding"],
+    "overlap": "Both use natural language — Claude to reason, Lovable to build.",
+    "connection": "Lovable is powered by Claude under the hood. When you describe your app to Lovable, Claude is the model generating the code."
+  },
+  {
+    "tools": ["claude", "jitter"],
+    "verdict": "different-jobs",
+    "summary": "Claude handles thinking and writing. Jitter handles motion and animation. Minimal overlap.",
+    "whenUseA": ["You need UX copy, briefs, or strategy documents", "You're thinking through a design problem", "You want help with research or user flows"],
+    "whenUseB": ["You need animated UI components or loading states", "You're creating motion assets for a product", "You want to bring static designs to life"],
+    "overlap": "Claude could write scripts for motion concepts; Jitter brings them to life visually."
+  },
+  {
+    "tools": ["claude", "figma"],
+    "verdict": "complementary",
+    "summary": "Claude is your thinking partner before you open Figma. Use it for UX writing, research, and structure — then design.",
+    "whenUseA": ["You're writing UI copy, error messages, or onboarding flows", "You're synthesizing user research into insights", "You need a second opinion on a design decision"],
+    "whenUseB": ["You're laying out screens and components visually", "You're building a design system or prototyping flows", "You need to hand off specs to developers"],
+    "overlap": "Figma Make can generate UI; Claude can generate copy and structure to inform that UI.",
+    "connection": "Figma Make — Figma's AI code generation feature — is powered by Claude. When you generate UI or code inside Figma, you're already using Claude."
+  },
+  {
+    "tools": ["claude", "midjourney"],
+    "verdict": "different-jobs",
+    "summary": "Claude generates text and reasoning. Midjourney generates images. They serve completely different creative needs.",
+    "whenUseA": ["You need written content — copy, briefs, analysis", "You're planning a design or product strategy", "You want conversational back-and-forth reasoning"],
+    "whenUseB": ["You need high-quality visual assets", "You're exploring visual styles or aesthetics", "You want images for moodboards or marketing"],
+    "overlap": "Both are generative AI tools — but one creates words, the other creates images."
+  },
+  {
+    "tools": ["claude", "v0"],
+    "verdict": "complementary",
+    "summary": "Use Claude to define the component's purpose and content, then v0 to generate the actual UI code.",
+    "whenUseA": ["You want to think through a component's behavior and states", "You need help writing the copy that goes inside the UI", "You're planning what to build before generating it"],
+    "whenUseB": ["You want a React/Tailwind component generated immediately", "You need clean, copy-pasteable code for a specific UI pattern", "You're scaffolding quickly from a screenshot or description"],
+    "overlap": "Both can generate UI from a text description — Claude more conversationally, v0 more directly as code."
+  },
+  {
+    "tools": ["claude", "runway"],
+    "verdict": "different-jobs",
+    "summary": "Claude creates text-based content. Runway creates video and visual media. Different outputs, different workflows.",
+    "whenUseA": ["You need written deliverables — copy, briefs, docs", "You're reasoning through a UX or product problem", "You want a conversational AI assistant"],
+    "whenUseB": ["You need video content for a product or campaign", "You want to animate an image or create a visual story", "You're producing media assets without a video team"],
+    "overlap": "Both are AI creative tools, but one produces text and the other produces video."
+  },
+  {
+    "tools": ["claude", "perplexity"],
+    "verdict": "pick-one",
+    "summary": "Both are AI assistants, but Perplexity searches the live web with sources. Claude reasons deeply without web access by default.",
+    "whenUseA": ["You want in-depth reasoning, writing, or code generation", "You're working on a long document or complex problem", "You want a conversational back-and-forth on a topic"],
+    "whenUseB": ["You need up-to-date information with cited sources", "You're doing quick research or fact-checking", "You want to know what's happening right now in a space"],
+    "overlap": "Both answer questions in natural language — Perplexity prioritizes recency and sources, Claude prioritizes depth and reasoning."
+  },
+  {
+    "tools": ["claude", "galileo"],
+    "verdict": "complementary",
+    "summary": "Use Claude to figure out what the UI should say and do, then use Google Stitch to generate it visually.",
+    "whenUseA": ["You're writing UX copy, flows, or content strategy", "You want to think through layout logic before generating it", "You need a reasoning partner for design decisions"],
+    "whenUseB": ["You're ready to generate a full UI from a prompt", "You want to export a visual design to Figma", "You need a fast visual starting point for a screen"],
+    "overlap": "Both accept natural language input and help designers move faster."
+  },
+  {
+    "tools": ["claude", "base44"],
+    "verdict": "complementary",
+    "summary": "Claude helps you think through what to build and how. Base44 then builds it without you writing a line of code.",
+    "whenUseA": ["You're scoping a product, writing requirements, or planning features", "You want to validate logic before building", "You need help writing the prompt you'll give to Base44"],
+    "whenUseB": ["You have a clear idea and want a working app with hosting now", "You need frontend, backend, and database all generated together", "You want to share a live link without deployment setup"],
+    "overlap": "Both are powered by AI and accept natural language — Claude to plan, Base44 to build."
+  },
+  {
+    "tools": ["framer", "lovable"],
+    "verdict": "pick-one",
+    "summary": "Framer is design-led and great for websites. Lovable is build-led and great for apps. Pick based on what you're making.",
+    "whenUseA": ["You're building a marketing site, portfolio, or landing page", "Design quality and visual polish are the priority", "You want a CMS and publishable site"],
+    "whenUseB": ["You need user authentication, a database, or app logic", "You're building a tool or product, not a website", "You want a full-stack prototype fast"],
+    "overlap": "Both let non-coders ship something live. Framer for websites, Lovable for apps."
+  },
+  {
+    "tools": ["framer", "jitter"],
+    "verdict": "complementary",
+    "summary": "Build the site in Framer, then use Jitter to create animated UI assets or motion elements to embed in it.",
+    "whenUseA": ["You're building and publishing a complete website", "You need page transitions and layout animations", "You're working on the full site experience"],
+    "whenUseB": ["You need a specific UI animation like a loader or icon transition", "You're creating motion assets to use across multiple platforms", "You want to animate a component independently from the site"],
+    "overlap": "Both handle animation — Framer at the page level, Jitter at the component level."
+  },
+  {
+    "tools": ["framer", "figma"],
+    "verdict": "complementary",
+    "summary": "The classic design-to-ship pipeline: design in Figma, build and publish in Framer.",
+    "whenUseA": ["You've finished designing and want to build the live version", "You need real interactions, not just click-through prototypes", "You're ready to publish without writing code"],
+    "whenUseB": ["You're still designing, exploring, or collaborating with a team", "You need to create design specs or a system", "You're prototyping flows before committing to a build"],
+    "overlap": "Framer can import Figma designs directly, making the handoff seamless."
+  },
+  {
+    "tools": ["framer", "midjourney"],
+    "verdict": "complementary",
+    "summary": "Generate images with Midjourney, then use them as hero assets or backgrounds in your Framer site.",
+    "whenUseA": ["You're building the website structure and layout", "You need interactive pages and navigation", "You're publishing a live site"],
+    "whenUseB": ["You need custom visuals that don't exist as stock photos", "You're establishing a visual mood or style", "You want unique imagery for your brand or campaign"],
+    "overlap": "Both are commonly used together by solo designers building polished websites."
+  },
+  {
+    "tools": ["framer", "v0"],
+    "verdict": "pick-one",
+    "summary": "Framer builds complete websites visually. v0 generates React components as code. Different outputs for different needs.",
+    "whenUseA": ["You want a fully designed, hosted site with no code", "You need a visual design tool with publishing built in", "You're not working inside a React codebase"],
+    "whenUseB": ["You need a specific React component to paste into an existing project", "You're building inside a Next.js or similar framework", "You want clean Tailwind code output"],
+    "overlap": "Both generate UI quickly — Framer as a visual site, v0 as reusable code."
+  },
+  {
+    "tools": ["framer", "runway"],
+    "verdict": "complementary",
+    "summary": "Create video assets with Runway and embed them in your Framer site as hero sections or background media.",
+    "whenUseA": ["You're building the website and need a place to showcase content", "You want layout, navigation, and published hosting", "You need an interactive site experience"],
+    "whenUseB": ["You need a product demo video or animated visual", "You want to generate motion content without a video editor", "You're creating media to use across multiple channels"],
+    "overlap": "Both are used by designers building polished, media-rich websites."
+  },
+  {
+    "tools": ["framer", "perplexity"],
+    "verdict": "different-jobs",
+    "summary": "Perplexity is for research and answers. Framer is for building and publishing. They don't overlap.",
+    "whenUseA": ["You're ready to build and publish a website", "You need visual design and interaction tools", "You're past the research phase"],
+    "whenUseB": ["You're researching competitors, trends, or technologies", "You need quick answers with sources before designing", "You're in the early discovery phase of a project"],
+    "overlap": "A designer might use Perplexity to research content, then build it in Framer."
+  },
+  {
+    "tools": ["framer", "galileo"],
+    "verdict": "pick-one",
+    "summary": "Both generate web UI fast, but Google Stitch outputs design files while Framer outputs a live, hosted website.",
+    "whenUseA": ["You want a published website with a real URL", "You need interactive pages, CMS, and hosting", "You're building for production"],
+    "whenUseB": ["You want a visual UI design to refine in Figma", "You need to explore a layout direction quickly", "You're generating a starting point, not a final product"],
+    "overlap": "Both let you create web UI from a text prompt without writing code."
+  },
+  {
+    "tools": ["framer", "base44"],
+    "verdict": "pick-one",
+    "summary": "Framer builds beautiful websites. Base44 builds functional apps. Pick based on whether you need a site or a product.",
+    "whenUseA": ["You're making a marketing site, portfolio, or landing page", "Design polish and visual quality are the priority", "You need a CMS or blog"],
+    "whenUseB": ["You need user accounts, a database, or app logic", "You're building a tool or internal product", "You need backend functionality, not just a website"],
+    "overlap": "Both let you ship something live without a full dev team."
+  },
+  {
+    "tools": ["lovable", "jitter"],
+    "verdict": "different-jobs",
+    "summary": "Lovable builds apps. Jitter animates UI. Use Jitter to create motion assets you embed into what you built in Lovable.",
+    "whenUseA": ["You're building the core app — screens, logic, and data", "You need a functional product, not just visuals", "You're prototyping a full user flow"],
+    "whenUseB": ["You need animated components like loaders, transitions, or icons", "You're adding motion to a product that already works", "You want to create polished UI animations without code"],
+    "overlap": "Both serve product designers — Lovable for building, Jitter for animating."
+  },
+  {
+    "tools": ["lovable", "figma"],
+    "verdict": "complementary",
+    "summary": "Design the screens in Figma, then describe them to Lovable to generate a working app.",
+    "whenUseA": ["You have a working design and want to bring it to life as an app", "You need a functional prototype beyond Figma's click-throughs", "You want to ship something users can actually use"],
+    "whenUseB": ["You're still in the design phase, exploring layouts and flows", "You need to collaborate with a team on design specs", "You're creating a component library or design system"],
+    "overlap": "Lovable can use Figma designs as reference for the apps it generates."
+  },
+  {
+    "tools": ["lovable", "midjourney"],
+    "verdict": "complementary",
+    "summary": "Generate brand and visual assets with Midjourney, then use them inside the app you build with Lovable.",
+    "whenUseA": ["You're building the structure and functionality of the app", "You need a working product, not just visuals", "You want interactive features and data"],
+    "whenUseB": ["You need custom imagery for your app's branding or content", "You're creating visual assets before building", "You want a unique aesthetic that stock photos can't provide"],
+    "overlap": "Both are generative AI tools used by solo builders and designers."
+  },
+  {
+    "tools": ["lovable", "v0"],
+    "verdict": "pick-one",
+    "summary": "Both generate UI from prompts, but Lovable builds full apps while v0 generates isolated components.",
+    "whenUseA": ["You need a complete app with routing, auth, and a database", "You want everything generated and hosted together", "You're building an MVP, not just a component"],
+    "whenUseB": ["You need a specific UI component to drop into an existing project", "You want clean React/Tailwind code without a full app structure", "You're scaffolding a design system piece by piece"],
+    "overlap": "Both generate frontend UI from natural language. Lovable goes further into the stack."
+  },
+  {
+    "tools": ["lovable", "runway"],
+    "verdict": "different-jobs",
+    "summary": "Lovable builds functional apps. Runway generates video content. They serve different creative needs entirely.",
+    "whenUseA": ["You're building an interactive product with screens and logic", "You need users to be able to sign in and do things in your app", "You want a working prototype to share"],
+    "whenUseB": ["You need video assets for a product launch or campaign", "You're animating content for social or marketing", "You want to create media without a video team"],
+    "overlap": "Both are AI-powered tools used by teams shipping products faster."
+  },
+  {
+    "tools": ["lovable", "perplexity"],
+    "verdict": "different-jobs",
+    "summary": "Perplexity answers questions. Lovable builds apps. Use Perplexity before Lovable to research what you're building.",
+    "whenUseA": ["You know what you want and are ready to build", "You need a working app, not answers", "You're in execution mode"],
+    "whenUseB": ["You're still researching the problem space or competitors", "You need facts, sources, or technical background", "You're in discovery or planning mode"],
+    "overlap": "A smart workflow: research in Perplexity, spec with Claude, build with Lovable."
+  },
+  {
+    "tools": ["lovable", "galileo"],
+    "verdict": "pick-one",
+    "summary": "Google Stitch generates UI designs. Lovable generates working apps. Similar input, very different output.",
+    "whenUseA": ["You need a functional app with real logic and data", "You want users to be able to sign up and interact", "Your output needs to do things, not just look good"],
+    "whenUseB": ["You need a visual UI design to refine or hand off", "You want to explore a layout direction before committing", "You're generating a design starting point"],
+    "overlap": "Both accept a natural language description and generate UI from it."
+  },
+  {
+    "tools": ["lovable", "base44"],
+    "verdict": "pick-one",
+    "summary": "Both build full apps without coding. Base44 leans more toward internal tools and data apps; Lovable leans toward consumer products.",
+    "whenUseA": ["You're building a user-facing product with a polished UI", "You want to iterate with a conversational AI partner", "You're targeting a consumer or SaaS audience"],
+    "whenUseB": ["You need an internal tool, dashboard, or data-driven app fast", "You want built-in hosting and a database without configuration", "You need integrations like email or file uploads out of the box"],
+    "overlap": "Both generate full-stack apps from natural language with no coding required."
+  },
+  {
+    "tools": ["jitter", "figma"],
+    "verdict": "complementary",
+    "summary": "Design static components in Figma, then import them to Jitter to add motion and animation.",
+    "whenUseA": ["You're ready to add animation to a designed component", "You want to create loaders, transitions, or animated icons", "You need to export motion for web or presentations"],
+    "whenUseB": ["You're designing the component layout and visual style first", "You need team collaboration on the design", "You're creating specs before adding motion"],
+    "overlap": "Jitter has a direct Figma import, making this one of the smoothest handoffs in the design stack."
+  },
+  {
+    "tools": ["jitter", "midjourney"],
+    "verdict": "complementary",
+    "summary": "Use Midjourney to generate visual assets, then animate them in Jitter for motion content.",
+    "whenUseA": ["You have visuals and want to bring them to life with animation", "You're creating animated marketing or social content", "You want motion output for your brand assets"],
+    "whenUseB": ["You need the visual assets and imagery first", "You're generating concepts, backgrounds, or characters to animate", "You're establishing the visual style before adding motion"],
+    "overlap": "A natural creative pipeline: generate the look in Midjourney, animate it in Jitter."
+  },
+  {
+    "tools": ["jitter", "v0"],
+    "verdict": "different-jobs",
+    "summary": "v0 generates static React components. Jitter animates UI elements. Different stages, different tools.",
+    "whenUseA": ["You need a working, interactive React component with code", "You want to drop a UI element into a codebase", "Your output is code"],
+    "whenUseB": ["You need animation — loaders, transitions, micro-interactions", "Your output is a motion asset or animated component", "You're working visually, not in code"],
+    "overlap": "Both speed up UI creation — one through code generation, the other through visual animation."
+  },
+  {
+    "tools": ["jitter", "runway"],
+    "verdict": "pick-one",
+    "summary": "Both handle motion and animation, but Jitter is for UI animations while Runway is for video content.",
+    "whenUseA": ["You're animating UI components, icons, or product interactions", "Your output will live inside a website or app", "You're working within a product design context"],
+    "whenUseB": ["You're creating a video — product demo, social content, or campaign", "Your output is a video file, not a UI component", "You need video editing, generation, or image animation"],
+    "overlap": "Both are used for motion design — Jitter for product UI, Runway for video and media."
+  },
+  {
+    "tools": ["jitter", "perplexity"],
+    "verdict": "different-jobs",
+    "summary": "Perplexity is for research. Jitter is for motion design. No meaningful overlap.",
+    "whenUseA": ["You're creating animations for your product", "You're in production mode adding motion to designs", "You need animated UI components"],
+    "whenUseB": ["You're researching animation trends or design references", "You need quick answers about motion principles or tools", "You're in discovery mode before starting a project"],
+    "overlap": "A designer might use Perplexity to research motion design patterns before building them in Jitter."
+  },
+  {
+    "tools": ["jitter", "galileo"],
+    "verdict": "different-jobs",
+    "summary": "Google Stitch generates UI layouts. Jitter animates them. Use Stitch to generate the design, Jitter to add life.",
+    "whenUseA": ["You have the design and need to animate specific components", "You're adding motion to a finished UI", "You need motion assets in a product context"],
+    "whenUseB": ["You're generating the visual UI layout first", "You need a design starting point from a text prompt", "You want to export to Figma for further work"],
+    "overlap": "A natural pipeline: generate layout in Stitch, animate components in Jitter."
+  },
+  {
+    "tools": ["jitter", "base44"],
+    "verdict": "different-jobs",
+    "summary": "Base44 builds functional apps. Jitter creates motion assets. They operate at different layers.",
+    "whenUseA": ["You need to add micro-interactions or animated UI to a product", "You're creating loading states or transitions", "You're in the polish phase of a product"],
+    "whenUseB": ["You're building the core product — screens, logic, and data", "You need a working app, not just motion assets", "You want to ship something users can actually use"],
+    "overlap": "Both are used in the product design process — Jitter for motion polish, Base44 for building."
+  },
+  {
+    "tools": ["figma", "midjourney"],
+    "verdict": "complementary",
+    "summary": "Generate image assets with Midjourney, then place and refine them inside your Figma designs.",
+    "whenUseA": ["You're laying out screens, components, and UI systems", "You need to combine images with UI elements", "You're creating specs or a design system"],
+    "whenUseB": ["You need custom visuals that don't exist as stock photos", "You're creating moodboards or exploring visual directions", "You want unique hero images or illustrations"],
+    "overlap": "Midjourney feeds Figma — generate the visuals, design the product around them."
+  },
+  {
+    "tools": ["figma", "v0"],
+    "verdict": "complementary",
+    "summary": "Design in Figma, then use v0 to generate React code that matches your design.",
+    "whenUseA": ["You need production-ready component code from your design", "You want to describe a component and get clean React output", "You're scaffolding a codebase from a Figma spec"],
+    "whenUseB": ["You're still designing — exploring layouts, components, and flows", "You need team collaboration and design specs", "You're building a design system before writing code"],
+    "overlap": "v0 can take a screenshot of a Figma design and generate code from it directly.",
+    "connection": "v0 accepts Figma screenshot imports — paste a screenshot of your design and v0 generates the React/Tailwind code for it. Figma Make does the same natively inside Figma."
+  },
+  {
+    "tools": ["figma", "runway"],
+    "verdict": "complementary",
+    "summary": "Design the product in Figma, create video and motion assets in Runway to use within it.",
+    "whenUseA": ["You're designing the UI layout and component structure", "You need screens, flows, and design specs", "You're collaborating with a team on the product design"],
+    "whenUseB": ["You need video content for onboarding, marketing, or product demos", "You're animating static images into video assets", "You want motion content without a video production team"],
+    "overlap": "Both are used by product and brand designers building complete design systems."
+  },
+  {
+    "tools": ["figma", "perplexity"],
+    "verdict": "complementary",
+    "summary": "Research in Perplexity to inform your design decisions, then execute them in Figma.",
+    "whenUseA": ["You're designing screens, components, or flows", "You're building a UI system or prototype", "You're in execution mode"],
+    "whenUseB": ["You're researching user needs, competitors, or design patterns", "You need quick answers before making a design decision", "You're in the discovery or planning phase"],
+    "overlap": "Both are core tools in a research-informed design process."
+  },
+  {
+    "tools": ["figma", "galileo"],
+    "verdict": "pick-one",
+    "summary": "Google Stitch generates UI layouts instantly from prompts. Figma is where you design and refine with full control.",
+    "whenUseA": ["You need fine-grained control over every design detail", "You're working within a team with shared components", "You're building a design system, not just a screen"],
+    "whenUseB": ["You need a solid starting point generated quickly from a brief", "You want to explore multiple layout directions fast", "You'll export to Figma anyway and refine from there"],
+    "overlap": "Stitch exports to Figma — use it to generate a draft, then polish it in Figma."
+  },
+  {
+    "tools": ["figma", "base44"],
+    "verdict": "complementary",
+    "summary": "Design the experience in Figma, then use Base44 to build a functional version of it without writing code.",
+    "whenUseA": ["You have a Figma design and want a working app built from it", "You need real interactions, data, and user accounts", "You're moving from design to a shippable product"],
+    "whenUseB": ["You're still in the design and exploration phase", "You need to create specs, flows, and a design system", "You're collaborating with a team before building"],
+    "overlap": "Both are used in the design-to-product pipeline — Figma for design, Base44 for building."
+  },
+  {
+    "tools": ["midjourney", "v0"],
+    "verdict": "different-jobs",
+    "summary": "Midjourney generates images. v0 generates UI code. They serve different creative outputs entirely.",
+    "whenUseA": ["You need component code — buttons, forms, layouts — for a codebase", "Your output is React/Tailwind that goes into a project", "You're building UI, not creating imagery"],
+    "whenUseB": ["You need visual assets — photos, illustrations, or moodboards", "Your output is an image file used in a design or campaign", "You're exploring aesthetics before designing"],
+    "overlap": "Both are generative AI tools that can speed up the visual design process."
+  },
+  {
+    "tools": ["midjourney", "runway"],
+    "verdict": "pick-one",
+    "summary": "Both generate visual content with AI, but Midjourney creates still images and Runway creates video.",
+    "whenUseA": ["You need a single, high-quality still image", "You're creating moodboards, illustrations, or hero assets", "Speed and image quality are the priority"],
+    "whenUseB": ["You need motion — video, animation, or image-to-video", "You're creating social content, product demos, or brand films", "Your output needs to move"],
+    "overlap": "Both are AI image and video creation tools used by brand and marketing designers."
+  },
+  {
+    "tools": ["midjourney", "perplexity"],
+    "verdict": "different-jobs",
+    "summary": "Perplexity gives you information and research. Midjourney gives you visuals. Completely different purposes.",
+    "whenUseA": ["You need to create a visual — image, moodboard, or concept art", "You're in visual production mode", "You want to generate something to show, not read"],
+    "whenUseB": ["You're researching visual trends, styles, or references", "You need cited information about a topic before designing", "You're in the discovery phase"],
+    "overlap": "Use Perplexity to research a style or concept, then bring it to life in Midjourney."
+  },
+  {
+    "tools": ["midjourney", "galileo"],
+    "verdict": "complementary",
+    "summary": "Generate visual assets in Midjourney, then use them as content inside UI designs generated by Google Stitch.",
+    "whenUseA": ["You need custom imagery for your UI — heroes, illustrations, or backgrounds", "You're creating brand visuals before designing the interface", "You want unique image assets to place in your design"],
+    "whenUseB": ["You're generating the UI layout and structure itself", "You want a complete design from a text prompt", "You're creating the interface that will contain the visuals"],
+    "overlap": "A natural pipeline: Midjourney for visuals, Stitch for the UI that frames them."
+  },
+  {
+    "tools": ["midjourney", "base44"],
+    "verdict": "complementary",
+    "summary": "Generate brand visuals in Midjourney, then build the app that showcases them using Base44.",
+    "whenUseA": ["You need custom imagery to use inside the app you're building", "You're creating brand assets before building the product", "You want unique visuals that stock photos can't provide"],
+    "whenUseB": ["You're building the functional app that uses those visuals", "You need user accounts, data, and logic — not just images", "You want a live app, not just a design"],
+    "overlap": "Both are AI tools used by solo founders and designers building products end-to-end."
+  },
+  {
+    "tools": ["v0", "runway"],
+    "verdict": "different-jobs",
+    "summary": "v0 generates React UI code. Runway generates video content. No meaningful overlap.",
+    "whenUseA": ["You need a UI component or layout as clean React code", "You're scaffolding a codebase or design system", "Your output is code that goes into a project"],
+    "whenUseB": ["You need a video — product demo, explainer, or social content", "Your output is a media file", "You're creating motion content without a video team"],
+    "overlap": "Both are used by designers who also ship — one for building UI, one for creating content."
+  },
+  {
+    "tools": ["v0", "perplexity"],
+    "verdict": "complementary",
+    "summary": "Use Perplexity to research a UI pattern or component approach, then use v0 to generate it.",
+    "whenUseA": ["You know what component you want and are ready to generate it", "You want clean React/Tailwind code immediately", "You're in production mode"],
+    "whenUseB": ["You're still deciding what pattern or approach to use", "You need examples, documentation, or comparisons before building", "You're in the research phase of a feature"],
+    "overlap": "Both accelerate a designer's workflow — Perplexity with knowledge, v0 with code."
+  },
+  {
+    "tools": ["v0", "galileo"],
+    "verdict": "pick-one",
+    "summary": "Both generate UI from a text prompt. v0 outputs React code; Google Stitch outputs a visual design.",
+    "whenUseA": ["You need copy-pasteable React/Tailwind code for a project", "You're working inside a codebase and need a component", "Your output needs to be code"],
+    "whenUseB": ["You want a visual design to explore or export to Figma", "You're not working in code — you want a design file", "You need to present a visual before committing to code"],
+    "overlap": "Both accept natural language and generate UI — the difference is whether you want code or a design."
+  },
+  {
+    "tools": ["v0", "base44"],
+    "verdict": "pick-one",
+    "summary": "v0 generates individual UI components. Base44 generates complete apps with a backend. Pick based on scope.",
+    "whenUseA": ["You need a specific component to drop into an existing project", "You're building incrementally inside a React codebase", "You want clean code output you can customize"],
+    "whenUseB": ["You want a full app — not just a component — generated and hosted", "You need a backend, database, and auth included", "You're building an MVP, not just a UI piece"],
+    "overlap": "Both generate frontend UI from natural language. Base44 goes further by including the full stack."
+  },
+  {
+    "tools": ["runway", "perplexity"],
+    "verdict": "different-jobs",
+    "summary": "Runway creates video content. Perplexity answers questions. No meaningful overlap.",
+    "whenUseA": ["You're in production mode, creating video assets", "You need motion content for a campaign or product", "Your output is a video file"],
+    "whenUseB": ["You're researching before you create", "You need information about video styles, trends, or techniques", "You're in discovery mode"],
+    "overlap": "Use Perplexity to research creative directions, then execute them in Runway."
+  },
+  {
+    "tools": ["runway", "galileo"],
+    "verdict": "different-jobs",
+    "summary": "Runway makes video. Google Stitch makes UI. They live in completely different creative domains.",
+    "whenUseA": ["You need video content — demos, animations, or campaigns", "Your output is a media file", "You're creating content that moves"],
+    "whenUseB": ["You need a UI design or layout generated from a prompt", "Your output is a design file or HTML", "You're building a product interface"],
+    "overlap": "Both are AI-powered creative tools used by modern design and marketing teams."
+  },
+  {
+    "tools": ["runway", "base44"],
+    "verdict": "different-jobs",
+    "summary": "Runway creates video content. Base44 builds functional apps. Completely different outputs.",
+    "whenUseA": ["You need video assets — product demos, social content, or campaigns", "Your output is media to be watched", "You're in content production mode"],
+    "whenUseB": ["You need a working product with screens, logic, and a database", "Your output is an app users can sign in to and use", "You're building, not creating content"],
+    "overlap": "Both are used by teams shipping a product — Runway for the content side, Base44 for the product side."
+  },
+  {
+    "tools": ["perplexity", "galileo"],
+    "verdict": "different-jobs",
+    "summary": "Perplexity gives you research and information. Google Stitch generates UI designs. No overlap.",
+    "whenUseA": ["You're ready to generate UI from a brief or description", "You have a clear vision and want a visual output fast", "You're in design production mode"],
+    "whenUseB": ["You're still researching the product space, users, or competitors", "You need cited answers before making design decisions", "You're in discovery or strategy mode"],
+    "overlap": "Use Perplexity to research what the UI should do, then use Stitch to generate how it looks."
+  },
+  {
+    "tools": ["perplexity", "base44"],
+    "verdict": "different-jobs",
+    "summary": "Perplexity answers questions. Base44 builds apps. Use one to research what to build, the other to build it.",
+    "whenUseA": ["You know what you want and are ready to build", "You need a working app with hosting", "You're in execution mode"],
+    "whenUseB": ["You're still figuring out what to build and for whom", "You need market research, competitive analysis, or technical answers", "You're in planning and discovery mode"],
+    "overlap": "Use Perplexity to research your market and problem, then build the solution in Base44."
+  },
+  {
+    "tools": ["galileo", "base44"],
+    "verdict": "pick-one",
+    "summary": "Both turn text prompts into web output, but Stitch creates designs while Base44 creates functional apps.",
+    "whenUseA": ["You need a UI design or layout to refine or export to Figma", "Your output is a design file or visual spec", "You want to present a visual before building"],
+    "whenUseB": ["You need a working app with real functionality", "You want a live URL with user accounts and a database", "Your output needs to be functional, not just visual"],
+    "overlap": "Both accept natural language and produce web UI — the key difference is design vs. functionality."
+  }
+]
