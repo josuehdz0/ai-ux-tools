@@ -173,8 +173,8 @@ const categories = [
 
   <!-- Compare Modal -->
   <div id="compare-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
-    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="modal-backdrop"></div>
-    <div class="relative bg-zinc-900 border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="modal-backdrop" style="opacity:0;transition:opacity 0.25s ease;"></div>
+    <div id="modal-card" class="relative bg-zinc-900 border border-white/10 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl" style="opacity:0;transform:scale(0.95);transition:opacity 0.25s ease,transform 0.25s cubic-bezier(0.34,1.56,0.64,1);">
 
       <!-- Close button -->
       <button id="modal-close" class="absolute top-4 right-4 z-10 text-zinc-500 hover:text-zinc-200 transition-colors">
@@ -775,6 +775,15 @@ const categories = [
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 
+    // Trigger scale + fade in
+    const backdrop = document.getElementById('modal-backdrop')!;
+    const card = document.getElementById('modal-card')!;
+    requestAnimationFrame(() => {
+      backdrop.style.opacity = '1';
+      card.style.opacity = '1';
+      card.style.transform = 'scale(1)';
+    });
+
     // Animate bars — defer until after modal is visible and painted
     setTimeout(() => {
       modal.querySelectorAll<HTMLElement>('.stat-bar-a, .stat-bar-b').forEach(bar => {
@@ -786,8 +795,15 @@ const categories = [
   }
 
   function closeModal() {
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
+    const backdrop = document.getElementById('modal-backdrop')!;
+    const card = document.getElementById('modal-card')!;
+    backdrop.style.opacity = '0';
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, 220);
   }
 
   compareBtn.addEventListener('click', openModal);
